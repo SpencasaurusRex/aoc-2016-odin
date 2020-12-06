@@ -53,3 +53,7 @@ clear_map :: proc(data: ^map[$K]$V)
         delete_key(data, key);
     }
 }
+
+
+int_cos := [4]int{1,0,-1,0};
+int_sin := [4]int{0,1,0,-1};

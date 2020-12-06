@@ -1,5 +1,6 @@
 package main
 
+import "core:math"
 import "core:fmt"
 import "core:os"
 import "core:strings"
@@ -16,9 +17,54 @@ import "parse"
 
 
 // Puzzles --------------------------------------------------------//
+manhattan_distance :: proc(x, y: int) -> int
+{
+    return abs(x) + abs(y);
+}
+
+
 day_one :: proc(input: string) 
 {
-    
+    using aoc;
+
+    facing := 1;
+    x := 0;
+    y := 0;
+
+    visited_locations := make(map[i64]bool);
+    directions := strings.split(input, ", ");
+
+    for direction in directions
+    {
+        //fmt.print(direction, x, y, facing, "->");
+        if direction[0] == 'R'
+        {
+            facing = (facing - 1) %% 4;
+        }
+        else
+        {
+            facing = (facing + 1) %% 4;
+        }
+
+        units,_ := strconv.parse_int(direction[1:]);
+        for i in 0..<units
+        {
+            x += int_cos[facing];
+            y += int_sin[facing];
+
+            location_hash := hash_2D(x, y);
+            if location_hash in visited_locations
+            {
+                fmt.println(manhattan_distance(x, y));
+                return;
+            }
+            visited_locations[location_hash] = true;
+        }
+
+        //fmt.println(x, y, facing);
+    }
+
+    // fmt.println(manhattan_distance(x, y));
 }
 
 day_two :: proc(input: string)
@@ -79,7 +125,7 @@ read_input_file :: proc(index: int) -> (string, bool)
 
 do_day :: proc(day: int)
 {
-    input, read_success := read_input_file(6);
+    input, read_success := read_input_file(day);
     if !read_success
     {
         fmt.println("Error occurred while reading input file");
